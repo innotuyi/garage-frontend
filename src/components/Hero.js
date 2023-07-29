@@ -11,7 +11,7 @@ const Hero = () => {
               Be part of our awesome community and stay updated with the latest
               trends and news.
             </p>
-            <button class="btn btn-secondary btn-lg">Sign Up Now</button>
+            <a class="btn btn-secondary btn-lg"  to="/register">Sign Up Now</a>
           </div>
         </div>
       </div>
