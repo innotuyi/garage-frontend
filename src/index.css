@@ -33,6 +33,14 @@ body {
   background-color: var(--bg-primary) !important;
 }
 
+.garage {
+  background-image: url('./image/About.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+}
+
 .footer {
   background-color: var(--bg-primary);
 }

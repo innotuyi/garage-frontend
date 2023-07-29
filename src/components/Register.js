@@ -103,7 +103,7 @@ const Register = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <div class="container">
+      <div class="container-fluid garage">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -207,7 +207,7 @@ const Register = () => {
                 </button>
               ) : (
                 <button
-                  class="btn btn-lg btn-block login-btn"
+                  class="btn btn-lg btn-block btn-secondary"
                   name="submit"
                   onClick={handleRegister}
                 >
@@ -215,7 +215,7 @@ const Register = () => {
                 </button>
               )}
             </form>
-            <div class="footer p-2">
+            <div class=" p-2">
               <span class="text-primary"> Already have an Account?</span>
               <Link to="/login">
                 <span class="text-dark text-bold pl-2">Sign in here</span>
