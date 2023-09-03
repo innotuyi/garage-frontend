@@ -26,14 +26,14 @@ const Register = () => {
     }
   };
 
-  const onLastChange = (e) => {
-    var em = e.target.value;
-    if (em != "") {
-      setLast({ value: em });
-    } else {
-      setLast({ value: em, message: "Write your Name" });
-    }
-  };
+//   const onLastChange = (e) => {
+//     var em = e.target.value;
+//     if (em != "") {
+//       setLast({ value: em });
+//     } else {
+//       setLast({ value: em, message: "Write your Name" });
+//     }
+//   };
 
   const onEmailChange = (e) => {
     var email = e.target.value;
@@ -65,8 +65,6 @@ const Register = () => {
 
     if (firstname.value == null || firstname.value == "") {
       setFirst({ message: "Write your firstname" });
-    } else if (lastname.value == null || lastname.value == "") {
-      setLast({ message: "Write your lastname" });
     } else if (email.value == null || email.value == "") {
       setEmail({ message: "Write your email" });
     } else if (!email.value.includes("@")) {
@@ -79,8 +77,8 @@ const Register = () => {
       //   setConfirm({ message: "Password does not match" });
     } else {
       const payload = {
-        firstname: firstname.value,
-        lastname: lastname.value,
+        name: firstname.value,
+        // lastname: lastname.value,
         email: email.value,
         password: password.value,
       };
@@ -135,17 +133,15 @@ const Register = () => {
             <h2 class="p-2 text-center login-header">Sign up</h2>
             <form class="p-3">
               <div class="form-row">
-                <div class="col-md-6">
-                  <label class="text-dark text-bold">Firstname</label>
+                  <label class="text-dark text-bold">Name</label>
                   <input
                     type="text"
                     class="form-control"
                     onChange={onFirstChange}
                   />
                   <span class="text-danger">{firstname.message}</span>
-                </div>
 
-                <div class="col-md-6">
+                {/* <div class="col-md-6">
                   <label class="text-dark text-bold">Lastname</label>
                   <input
                     type="text"
@@ -153,7 +149,7 @@ const Register = () => {
                     onChange={onLastChange}
                   />
                   <span class="text-danger">{lastname.message}</span>
-                </div>
+                </div> */}
               </div>
 
               <div class="form-group">
@@ -186,13 +182,6 @@ const Register = () => {
                 />
 
                 <span class="text-danger">{confirm_password.message}</span>
-              </div>
-
-              <div class="checkbox">
-                <label class="text-dark text-bold">
-                  <input type="checkbox" value="" />
-                   Accept terms and conditions
-                </label>
               </div>
               <br />
 

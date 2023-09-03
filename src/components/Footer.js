@@ -2,14 +2,14 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer class="text-white py-5 footer">
+    <footer class="text-white py-2 footer">
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <h4>Garage Management System</h4>
-            <p>Address: 123 Main Street, City, Country</p>
-            <p>Email: info@garagemanagement.com</p>
-            <p>Phone: +1 (123) 456-7890</p>
+            <h4>Castro Driving School Online Management System</h4>
+            <p>Address: Nyarugenge, Kigali, Rwanda</p>
+            <p>Email: fideluwiringiyima@gmail.com</p>
+            <p>Phone: +250 788843907</p>
           </div>
           <div class="col-md-4">
             <h4>Quick Links</h4>

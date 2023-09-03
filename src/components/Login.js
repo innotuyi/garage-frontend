@@ -52,21 +52,25 @@ function Login() {
           "http://127.0.0.1:8000/api/login",
           payload
         );
-        console.log(response.data)
-        localStorage.setItem("token", response.data);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("userID", response.data.id);
+
         toast.success("Login successfully");
-        history.push("/dashboard", payload);
+        history.push("/course");
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        toast.warn(error.response.error);
+        toast.warn("Username or Password Incorrect");
         history.push("/login", payload);
       }
     }
   };
   return (
     <>
-      <div class="container-fluid">
+
+    <Navbar/>
+      <div class="container-fluid garage">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -115,15 +119,6 @@ function Login() {
                 />
                 <span class="text-danger">{pass.message}</span>
               </div>
-              <div class="form-group">
-                <div class="checkbox">
-                  <label class="text-dark text-bold">
-                    <input type="checkbox" value="" />
-                     Remember me
-                  </label>
-                </div>
-              </div>
-
               {loading ? (
                 <button class="btn btn-block  login-btn" type="button" disabled>
                   <span
@@ -143,12 +138,11 @@ function Login() {
                 </button>
               )}
             </form>
-            <div class="footer p-2">
-            </div>
           </div>
         </div>
       </div>
 
+      <Footer/>
     </>
   );
 }
