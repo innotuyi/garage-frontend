@@ -27,7 +27,7 @@ a {
   height: 91vh;
   color: var(--secondary-color);
   padding: 2rem;
-  background-image: url(./image/castro4.jpeg);
+  background-image: url(./image/car.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -46,7 +46,7 @@ a {
 }
 
 .garage {
-  background-image: url("./image/castro6.jpeg");
+  background-image: url("./image/car.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -54,7 +54,7 @@ a {
 }
 
 .about {
-  background-image: url("./image/castro5.jpeg");
+  background-image: url("./image/car.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -130,6 +130,13 @@ a {
   padding: 50px 0;
 }
 
+.card-link {
+
+padding: 2rem !important;
+background-color: yellow !;
+
+}
+
 .course-card {
   background-color: #1d293e;
   border: none;
@@ -165,4 +172,30 @@ a {
   font-family: sans-serif;
   color: black !important;
   font-weight: #fff;
+}
+
+
+
+.nav-item.profile {
+  font-weight: bold; 
+}
+
+.profile-photo {
+  width: 50px; 
+  height: 50px; 
+  border-radius: 50%; 
+}
+
+.profile-name {
+  font-size: 18px; 
+  margin-left: 10px; 
+}
+
+.dropdown-menu {
+  background-color: #1d293e !important;
+}
+
+.dropdown-item:hover {
+
+  color: black !important;
 }

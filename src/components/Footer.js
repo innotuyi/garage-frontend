@@ -1,4 +1,11 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faTwitter,
+  faInstagram,
+  faLinkedinIn,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
@@ -28,25 +35,25 @@ const Footer = () => {
           </div>
           <div class="col-md-4">
             <h4>Follow Us</h4>
-            <ul class="list-unstyled d-flex justify-content-between">
+            <ul className="list-unstyled d-flex justify-content-between">
               <li>
                 <a href="#">
-                  <i class="fab fa-facebook-f"></i>
+                  <FontAwesomeIcon icon={faFacebookF} />
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fab fa-twitter"></i>
+                  <FontAwesomeIcon icon={faTwitter} />
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fab fa-instagram"></i>
+                  <FontAwesomeIcon icon={faInstagram} />
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <i class="fab fa-linkedin-in"></i>
+                  <FontAwesomeIcon icon={faLinkedinIn} />
                 </a>
               </li>
             </ul>

@@ -4,43 +4,23 @@ import axios from "axios";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { Puff } from "react-loader-spinner";
+import "react-toastify/dist/ReactToastify.css";
 
-const Register = () => {
+const Forgot = () => {
   const history = useHistory();
 
-  const [firstname, setFirst] = useState({});
-  const [lastname, setLast] = useState({});
   const [email, setEmail] = useState({});
   const [password, setPass] = useState({});
-  const [confirm_password, setConfirm] = useState({});
+  const [password_confirmation, setConfirm] = useState({});
   const [loading, setLoading] = useState("");
-
-  const onFirstChange = (e) => {
-    var em = e.target.value;
-    if (em != "") {
-      setFirst({ value: em });
-    } else {
-      setLast({ value: em, message: "Write your Name" });
-    }
-  };
-
-  //   const onLastChange = (e) => {
-  //     var em = e.target.value;
-  //     if (em != "") {
-  //       setLast({ value: em });
-  //     } else {
-  //       setLast({ value: em, message: "Write your Name" });
-  //     }
-  //   };
 
   const onEmailChange = (e) => {
     var email = e.target.value;
     if (email != "") {
       setEmail({ value: email });
     } else {
-      setEmail({ value: email, message: "Write Email" });
+      setEmail({ value: email, message: "Please enter existing email" });
     }
   };
   const onPasswordChange = (e) => {
@@ -55,55 +35,50 @@ const Register = () => {
   const onPasswodConfirmCahnge = (e) => {
     var confirm = e.target.value;
     if (confirm != "") {
-      setConfirm({ value: confirm_password });
+      setConfirm({ value: password_confirmation });
     } else {
-      setConfirm({ value: confirm_password, message: "confirm your password" });
+      setConfirm({ value: password_confirmation, message: "confirm your password" });
     }
   };
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    if (firstname.value == null || firstname.value == "") {
-      setFirst({ message: "Write your firstname" });
-    } else if (email.value == null || email.value == "") {
-      setEmail({ message: "Write your email" });
+    if (email.value == null || email.value == "") {
+      setEmail({ message: "Please enter existing email" });
     } else if (!email.value.includes("@")) {
       setEmail({ message: "Please Include '@'" });
     } else if (password.value == null || password.value == "") {
-      setPass({ message: "enter your password" });
-    } else if (confirm_password.value == null || confirm_password.value == "") {
+      setPass({ message: "Enter new password" });
+    } else if (password_confirmation.value == null || password_confirmation.value == "") {
       setConfirm({ message: "Please confirm Password" });
-      // } else if (confirm_password.value !== password.value) {
+      // } else if (password_confirmation.value !== password.value) {
       //   setConfirm({ message: "Password does not match" });
     } else {
       const payload = {
-        name: firstname.value,
-        // lastname: lastname.value,
         email: email.value,
         password: password.value,
+        password_confirmation:password.value
       };
-      console.log(password, confirm_password);
       try {
         setLoading(true);
         const response = await axios.post(
-          "http://127.0.0.1:8000/api/register",
+          "http://127.0.0.1:8000/api/forgot",
           payload
         );
-        console.log(response);
+        toast.success(response.message);
         history.push("/login");
         setLoading(false);
       } catch (error) {
-        toast.warn(error.response.data.error);
-
+        console.log("my errors", error.response.data.errors.email)
+        toast.warn(error);
         setLoading(false);
       }
     }
   };
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <div class="container-fluid garage">
-        <ToastContainer
+      <ToastContainer
           position="top-center"
           autoClose={5000}
           hideProgressBar={false}
@@ -115,44 +90,11 @@ const Register = () => {
           pauseOnHover
           theme="light"
         />
+       
 
         <div class="row">
           <div class="col-md-6 offset-md-3 col-xs-12 bg-light mt-4 pt-4 mb-4">
-            {/* {loading ?  <Puff
-              height="100"
-              width="100"
-              radisu={1}
-              color="#4fa94d"
-              ariaLabel="puff-loading"
-              wrapperStyle={{
-                margin:"auto",
-                paddingTop:"6rem"
-              }}
-              wrapperClass=""
-              visible={true}
-              />:null} */}
-            <h2 class="p-2 text-center login-header">Sign up</h2>
             <form class="p-3">
-              <div class="form-row">
-                <label class="text-dark text-bold">Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  onChange={onFirstChange}
-                />
-                <span class="text-danger">{firstname.message}</span>
-
-                {/* <div class="col-md-6">
-                  <label class="text-dark text-bold">Lastname</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    onChange={onLastChange}
-                  />
-                  <span class="text-danger">{lastname.message}</span>
-                </div> */}
-              </div>
-
               <div class="form-group">
                 <label class="text-dark text-bold p-1">Email</label>
                 <input
@@ -182,7 +124,7 @@ const Register = () => {
                   onChange={onPasswodConfirmCahnge}
                 />
 
-                <span class="text-danger">{confirm_password.message}</span>
+                <span class="text-danger">{password_confirmation.message}</span>
               </div>
               <br />
 
@@ -201,29 +143,17 @@ const Register = () => {
                   name="submit"
                   onClick={handleRegister}
                 >
-                  Register
+                  Reset password
                 </button>
               )}
             </form>
-            <div class=" p-2">
-              <span class="text-primary"> Already have an Account?</span>
-              <Link to="/login">
-                <span class="text-dark text-bold pl-2">Sign in here</span>
-              </Link>
-              <div>
-                <span class="text-primary">Forgot</span>
-                <Link to="forget" class="text-dark text-bold">
-                  <span class="ml-2">Password?</span>
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* <Footer /> */}
+       <Footer /> 
     </>
   );
 };
 
-export default Register;
+export default Forgot;

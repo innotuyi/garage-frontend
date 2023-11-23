@@ -13,18 +13,79 @@ import { BiExit } from "react-icons/bi";
 const Sidebar = () => {
   const history = useHistory();
 
+  const role = localStorage.getItem("role");
+
+  const userID = localStorage.getItem("userID");
+
   function handleLogout() {
     localStorage.removeItem("token");
-    history.push("/login");
+    history.push("/");
+    window.location.reload()
   }
   return (
     <>
       <div class="col-md-2 sidebar-bg sidebar ">
         <ul>
+          {role === "student" && <>
+
           <li>
             <MdDashboard style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to={`/dashboard/${userID}`}>Dashboard</Link>
+
           </li>
+
+          <li>
+            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
+            <Link to="/mycourses">My Courses</Link>
+          </li>
+          
+          <li>
+            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
+            <Link to="/mybooks">Books</Link>
+          </li>
+
+
+          <li>
+            <BiExit
+              style={{ color: "#fff", fontSize: "1.4rem" }}
+              class="pr-1"
+            />
+            <Link to="/" onClick={handleLogout}>
+              Logout
+            </Link>
+          </li>
+
+          </>}
+
+          {role === "teacher" && <>
+
+          <li>
+            <MdLibraryAdd style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
+            <Link to="/addCourse">Add course</Link>
+          </li>
+          <li>
+            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
+            <Link to="/coursScreen">All courses</Link>
+          </li>
+
+          <li>
+            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
+            <Link to="/students">Students</Link>
+          </li>
+          <li>
+            <BiExit
+              style={{ color: "#fff", fontSize: "1.4rem" }}
+              class="pr-1"
+            />
+            <Link  onClick={handleLogout}>
+              Logout
+            </Link>
+          </li>
+          
+          
+          </>}
+
+          {role === "admin" && <>
 
           <li>
             <MdLibraryAdd style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
@@ -36,22 +97,16 @@ const Sidebar = () => {
           </li>
           <li>
             <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
-            <Link to="/allCourses">All courses</Link>
+            <Link to="/coursScreen">All courses</Link>
+          </li>
+          <li>
+            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
+            <Link to="/mybooks">Books</Link>
           </li>
 
           <li>
             <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
-            <Link to="/mycourses">My Courses</Link>
-          </li>
-
-          <li>
-            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
-            <Link to="/myBooks">Books</Link>
-          </li>
-
-          <li>
-            <MdToc style={{ color: "#fff", fontSize: "1.4rem" }} />{" "}
-            <Link to="/enollments">Enrollments</Link>
+            <Link to="/allEnrollments">Enrollments</Link>
           </li>
 
           <li>
@@ -68,10 +123,13 @@ const Sidebar = () => {
               style={{ color: "#fff", fontSize: "1.4rem" }}
               class="pr-1"
             />
-            <Link to="/" onClick={handleLogout}>
+            <Link  onClick={handleLogout}>
               Logout
             </Link>
-          </li>
+          </li>       
+          </>}
+
+        
         </ul>
       </div>
     </>

@@ -25,8 +25,8 @@ const Course = () => {
       const response = await axios.post(
         `http://127.0.0.1:8000/api/enroll/${userID}/${id}`
       );
-      toast.success("Enrolled successfully");
       history.push(`/dashboard/${userID}`);
+      toast.success("Enrolled successfully");
     } catch (error) {
       console.error(error);
       toast.error("Enrollment failed");

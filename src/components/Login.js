@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -10,14 +10,16 @@ import Footer from "../components/Footer";
 
 function Login() {
   const history = useHistory();
-
   const [username, setUsername] = useState({});
   const [loading, setLoading] = useState("");
   const [alert, setAlert] = useState(false);
   const [pass, setPassword] = useState({});
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [textVisible, setTextVisible] = useState(false); // State to toggle text visibility
+
   const onUsernameChange = (e) => {
     var em = e.target.value;
-    if (em != "") {
+    if (em !== "") {
       setUsername({ value: em });
     } else {
       setUsername({ value: em, message: "Write your username" });
@@ -26,19 +28,29 @@ function Login() {
 
   const onPassChange = (e) => {
     var em = e.target.value;
-    if (em != "") {
+    if (em !== "") {
       setPassword({ value: em });
     } else {
-      setPassword({ value: em, message: "Enter you Password" });
+      setPassword({ value: em, message: "Enter your Password" });
     }
+  };
+
+  const toggleTextVisibility = () => {
+    // Toggle the visibility of the text
+    setTextVisible(!textVisible);
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (username.value == null || username.value == "") {
+    if (!acceptedTerms) {
+      toast.warn("Please accept the Terms and Conditions.");
+      return;
+    }
+
+    if (username.value == null || username.value === "") {
       setUsername({ message: "Write your email" });
-    } else if (pass.value == null || pass.value == "") {
+    } else if (pass.value == null || pass.value === "") {
       setPassword({ message: "Enter your password" });
     } else {
       const payload = {
@@ -55,10 +67,11 @@ function Login() {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
         localStorage.setItem("userID", response.data.id);
-
-        toast.success("Login successfully");
-        history.push("/course");
-        setLoading(false);
+        localStorage.setItem("isEnrolled", response.data.isEnrolled);
+        const isEnrolled = localStorage.getItem('isEnrolled');
+          history.push("/admin");
+          setLoading(false);
+        
       } catch (error) {
         setLoading(false);
         toast.warn("Username or Password Incorrect");
@@ -66,11 +79,11 @@ function Login() {
       }
     }
   };
+
   return (
     <>
-
-    <Navbar/>
-      <div class="container-fluid garage">
+      <Navbar />
+      <div className="container-fluid garage">
         <ToastContainer
           position="top-center"
           autoClose={5000}
@@ -84,8 +97,8 @@ function Login() {
           theme="light"
         />
 
-        <div class="row">
-          <div class="col-md-6 offset-md-3 col-xs-12 bg-light p-4 mt-4 mb-4">
+        <div className="row">
+          <div className="col-md-6 offset-md-3 col-xs-12 bg-light p-4 mt-4 mb-4">
             <h4
               style={{
                 color: "red",
@@ -94,35 +107,60 @@ function Login() {
               {alert ? "Username or Password is wrong" : ""}
             </h4>
 
-            <h1 class="text-center pb-3 login-header">Login</h1>
+            <h1 className="text-center pb-3 login-header">Login</h1>
 
             <form>
-              <div class="form-group">
-                <label class="text-dark text-bold">Username</label>
+              <div className="form-group">
+                <label className="text-dark text-bold">Username</label>
 
                 <input
                   type="text"
                   name="username"
-                  class="form-control"
+                  className="form-control"
                   onChange={onUsernameChange}
                 />
-                <span class="text-danger">{username.message}</span>
+                <span className="text-danger">{username.message}</span>
               </div>
 
-              <div class="form-group">
-                <label class="text-dark text-bold">Password</label>
+              <div className="form-group">
+                <label className="text-dark text-bold">Password</label>
                 <input
                   type="password"
                   name=""
-                  class="form-control"
+                  className="form-control"
                   onChange={onPassChange}
                 />
-                <span class="text-danger">{pass.message}</span>
+                <span className="text-danger">{pass.message}</span>
               </div>
+
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="acceptTerms"
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                />
+                <label className="form-check-label" htmlFor="acceptTerms">
+                  I accept the{" "}
+                  <Link to="/terms">Terms and Conditions</Link>.
+                </label>
+              </div>
+
+              {/* Toggleable text */}
+              <p
+                className="text-muted toggle-text"
+                onClick={toggleTextVisibility}
+                style={{ cursor: "pointer" }}
+              >
+                {textVisible
+                  ? "No one cares what you are going to do on the system."
+                  : "Read terms and condition"}
+              </p>
+
               {loading ? (
-                <button class="btn btn-block  login-btn" type="button" disabled>
+                <button className="btn btn-block login-btn" type="button" disabled>
                   <span
-                    class="spinner-grow spinner-grow-sm"
+                    className="spinner-grow spinner-grow-sm"
                     role="status"
                     aria-hidden="true"
                   ></span>
@@ -130,7 +168,7 @@ function Login() {
                 </button>
               ) : (
                 <button
-                  class="btn btn-lg btn-block btn-secondary"
+                  className="btn btn-lg btn-block btn-secondary"
                   name="submit"
                   onClick={handleLogin}
                 >
@@ -142,7 +180,7 @@ function Login() {
         </div>
       </div>
 
-      <Footer/>
+      <Footer />
     </>
   );
 }

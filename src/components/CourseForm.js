@@ -1,58 +1,103 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CourseForm = () => {
-  const [formData, setFormData] = useState({
-    courseName: "",
-    fileType: "video",
-    description: "",
-    file: null,
-  });
 
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
+  const userID = localStorage.getItem("userID");
 
-    if (type === "file") {
-      setFormData({ ...formData, [name]: e.target.files[0] });
+  const role = localStorage.getItem("role");
+  const [loading, setLoading] = useState("");
+  const [type, setType] = useState({});
+  const [description, setDescription] = useState({});
+  const [file1, setFile1] = useState({});
+
+  const onTypeChange = (e) => {
+    var em = e.target.value;
+    if (em != "") {
+      setType({ value: em });
     } else {
-      setFormData({ ...formData, [name]: value });
+      setType({ message: "Select Type" });
     }
   };
 
-  const handleSubmit = (e) => {
+  const onDescriptionChange = (e) => {
+    var em = e.target.value;
+    if (em != "") {
+      setDescription({ value: em });
+    } else {
+      setDescription({ message: "Write description please" });
+    }
+  };
+
+  const onFile1Change = (e) => {
+    var em = e.target.files[0];   
+   if (em != "") {
+      setFile1({ value: em });
+    } else {
+      setFile1({ message: "Upload file please" });
+    }
+  };
+
+  const handleUpload = (e) => {
     e.preventDefault();
-    // Perform course submission or validation here
-    console.log(formData);
+
+    if (type.value == null || type.value == "") {
+      setType({ message: "Select Type" });
+    } else if (description.value == null || description.value == "") {
+      setDescription({ message: "Enter description" });
+    } else {
+      const formData = new FormData();
+      formData.append("course", file1.value);
+      formData.append("teacherID", userID);
+      formData.append("file_type", type.value);
+      formData.append("description", description.value);
+
+      for (const pair of formData.entries()) {
+        console.log(`${pair[0]}, ${pair[1]}`);
+      }
+        
+      setLoading(true);
+      axios
+        .post("http://127.0.0.1:8000/api/upload", formData)
+        .then(function (response) {
+          toast.success("Course Added successfully");
+          console.log("Successful response: ", response.data);
+          setLoading(false);
+
+        })
+        .catch(function (error) {
+          setLoading(false);
+          toast.success("Failed to add course");
+          console.log("Error response: ", error);
+        });
+    }
   };
 
   return (
     <div className="container mt-5">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="jumbotron bg-secondary">
         <h1 className="display-4">Add a Course</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="courseName">Title</label>
-            <input
-              type="text"
-              className="form-control"
-              id="courseName"
-              name="courseName"
-              value={formData.courseName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
+        <form>
           <div className="form-group">
             <label htmlFor="fileType">File Type</label>
-            <select
-              className="form-control"
-              id="fileType"
-              name="fileType"
-              value={formData.fileType}
-              onChange={handleChange}
-            >
-              <option value="video">Video</option>
-              <option value="pdf">PDF</option>
+            <select class="form-control " id="sel1" onChange={onTypeChange}>
+              <option></option>
+              <option value='video'>Video</option>
+              <option value='pdf'>Pdf</option>
             </select>
           </div>
 
@@ -62,8 +107,7 @@ const CourseForm = () => {
               className="form-control"
               id="description"
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              onChange={onDescriptionChange}
               rows="4"
               required
             ></textarea>
@@ -76,13 +120,27 @@ const CourseForm = () => {
               className="form-control-file"
               id="file"
               name="file"
-              onChange={handleChange}
+              onChange={onFile1Change}
             />
           </div>
-
-          <button type="submit" className="btn btn-primary">
+          {loading ? (
+            <button class="btn btn-block  login-btn" type="button" disabled>
+              <span
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Loading...
+            </button>
+          ) : (
+            <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={handleUpload}
+          >
             Add Course
           </button>
+          )}
         </form>
       </div>
     </div>

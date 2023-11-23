@@ -5,13 +5,15 @@ import { FaBeer } from "react-icons/fa";
 import { BsFillHouseDoorFill } from "react-icons/bs";
 
 const Statistics = () => {
-  const [messages, setMessage] = useState([]);
 
-  const [count, setPropertyCount] = useState();
+  const role = localStorage.getItem('role')
+
+  const [course, setCourse] = useState([]);
+
+  const [Student, setStudentCount] = useState();
 
   const [messagesCount, setMessagecount] = useState();
 
-  const [forsale, setForSale] = useState();
 
   const [forRent, setforRent] = useState();
 
@@ -19,13 +21,14 @@ const Statistics = () => {
     async function propertyCount() {
       try {
         const { data } = await axios.get(
-          "http://127.0.0.1:8000/api/property/statistics"
+          "http://127.0.0.1:8000/api/report/students"
         );
 
-        if (data) {
-          setPropertyCount(data[0].total);
+        console.log("report data", data)
 
-          console.log("count", count);
+        if (data) {
+          setStudentCount(data[0].count);
+
         }
       } catch (error) {
         console.log(error);
@@ -38,13 +41,11 @@ const Statistics = () => {
     async function getforsale() {
       try {
         const { data } = await axios.get(
-          "http://127.0.0.1:8000/api/property/statistics"
+          "http://127.0.0.1:8000/api/report/courses"
         );
 
         if (data) {
-          setForSale(data[0].total);
-
-          console.log("ForSalae", forsale);
+          setCourse(data[0].count);
         }
       } catch (error) {
         console.log(error);
@@ -53,34 +54,17 @@ const Statistics = () => {
     getforsale();
   }, []);
 
-  useEffect(() => {
-    async function getforrent() {
-      try {
-        const { data } = await axios.get(
-          "http://127.0.0.1:8000/api/forsale/statistics"
-        );
-
-        if (data) {
-          setforRent(data[0].total);
-
-          console.log("forrent", forRent);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getforrent();
-  }, []);
+ ;
 
   useEffect(() => {
     async function getAllMessageCount() {
       try {
         const { data } = await axios.get(
-          "http://127.0.0.1:8000/api/message/statistics"
+          "http://127.0.0.1:8000/api/report/ernrol"
         );
 
         if (data) {
-          setMessagecount(data[0].total);
+          setMessagecount(data[0].count);
 
           console.log("Messagecount", messagesCount);
         }
@@ -91,22 +75,8 @@ const Statistics = () => {
     getAllMessageCount();
   }, []);
 
-  useEffect(() => {
-    async function getAllMessage() {
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/get-request"
-        );
+  if (role === "admin" || role === "teacher") {
 
-        if (response) {
-          setMessage(response.data.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getAllMessage();
-  }, []);
   return (
     <>
       <div class="col-md-10">
@@ -115,7 +85,7 @@ const Statistics = () => {
             <div class="card bg-info text-white">
               <div class="card-body">
                 <h5 class="card-title">Student</h5>
-                <p class="card-text">5</p>
+                <p class="card-text">{Student}</p>
               </div>
             </div>
           </div>
@@ -123,7 +93,7 @@ const Statistics = () => {
             <div class="card bg-success text-white">
               <div class="card-body">
                 <h5 class="card-title">Courses</h5>
-                <p class="card-text">3</p>
+                <p class="card-text">{course}</p>
               </div>
             </div>
           </div>
@@ -131,7 +101,7 @@ const Statistics = () => {
             <div class="card bg-primary text-white">
               <div class="card-body">
                 <h5 class="card-title">Enrolled</h5>
-                <p class="card-text">4</p>
+                <p class="card-text">{messagesCount}</p>
               </div>
             </div>
           </div>
@@ -159,6 +129,9 @@ const Statistics = () => {
       </div>
     </>
   );
+  } else {
+    return null;
+  }
 };
 
 export default Statistics;
